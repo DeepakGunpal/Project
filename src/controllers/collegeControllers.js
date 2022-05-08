@@ -44,6 +44,9 @@ const createCollege = async function (req, res) {
                 .send({ status: false, message: `Invalid url` });
 
         }
+        
+        data.name = req.body.name.toLowerCase().trim()
+        data.fullName = req.body.fullName.toLowerCase().trim()
 
         let name = await collegeModel.findOne({ name: req.body.name });
         console.log(name);
