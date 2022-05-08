@@ -5,9 +5,9 @@ const collegeController = require("../controllers/collegeControllers");
 const internController = require("../controllers/internControllers");
 
 //1. api
-router.post("/college", collegeController.createCollege);
+router.post("/colleges", collegeController.createCollege);
 //2. api
-router.post("/intern", internController.createIntern);
+router.post("/interns", internController.createIntern);
 //3. api
 router.get("/collegeDetails", collegeController.collegeDetails);
 
