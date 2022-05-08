@@ -68,14 +68,16 @@ const createCollege = async function (req, res) {
 const collegeDetails = async function (req, res) {
   try {
     //reading inputs
-    const collegeName = req.query.collegeName;
+    let collegeName = req.query.collegeName;
     if (!collegeName) {
       return res
         .status(400)
         .send({ status: false, message: "enter college to filter" });
     }
 
-    //
+    //transform college name to lowercase and trim extra space from start and end
+    collegeName = req.query.collegeName.toLowerCase().trim()
+    //find college
     const college = await collegeModel.findOne({
       name: collegeName,
       isDeleted: false,
@@ -92,7 +94,7 @@ const collegeDetails = async function (req, res) {
       logoLink: college.logoLink,
     };
     const Id = college._id;
-    const interns = await internModel.find({ collegeId: Id, isDeleted: false });
+    const interns = await internModel.find({ collegeId: Id, isDeleted: false }).sort({createdAt:-1});
     
     if (interns.length>0){
       filtercollege.interests = interns;

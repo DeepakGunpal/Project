@@ -16,6 +16,7 @@ const isValidRequestBody = function (requestbody) {
 const createIntern = async function (req, res) {
   try {
     const requestBody = req.body; //reading input
+    req.body.collegeName = req.body.collegeName.toLowerCase().trim();
 
     if (!isValidRequestBody(requestBody)) {
       res
@@ -26,10 +27,10 @@ const createIntern = async function (req, res) {
         });
       return;
     }
-    //  EXTRACT PARAMS
-    const { name, email, mobile, collegeName } = requestBody;
+   
+    const { name, email, mobile, collegeName } = requestBody;//Destructuring
 
-    //  VALIDATION
+    //  mandatory fields validation
     if (!isValid(name)) {
       res
         .status(400)
@@ -96,7 +97,7 @@ const createIntern = async function (req, res) {
       return;
     }
 
-    // FIND COLLEGE NAME IN COLLEGE MODEL
+    // Find college
     const collegenameDetails = await collegeModel.findOne({
       name: collegeName,
       isDeleted: false,
@@ -108,13 +109,13 @@ const createIntern = async function (req, res) {
       return;
     }
 
-    // COLLEGEID===COLLEGENAME
+    // extract collgeId from college data
     const collegeId = collegenameDetails["_id"];
 
-    // EXTRACT INTERN PARAMS
+    // create intern with following keys
     const interndata = { name, email, mobile, collegeId };
 
-    // CREATE INTERN DATA
+    // create intern 
     const newIntern = await internModel.create(interndata);
     res
       .status(201)

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const collegeModel = require("./collegeModel");
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const internSchema = new mongoose.Schema(
@@ -18,7 +17,7 @@ const internSchema = new mongoose.Schema(
     },
     collegeId: {
       type: ObjectId,
-      ref: collegeModel,
+      ref: 'mycollege',
     },
     isDeleted: {
       type: Boolean,
@@ -28,4 +27,4 @@ const internSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("intern", internSchema);
+module.exports = mongoose.model("myIntern", internSchema);
