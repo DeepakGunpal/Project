@@ -19,16 +19,14 @@ const createIntern = async function (req, res) {
     req.body.collegeName = req.body.collegeName.toLowerCase().trim();
 
     if (!isValidRequestBody(requestBody)) {
-      res
-        .status(400)
-        .send({
-          status: false,
-          message: "Invalid request parameters. Please provide intern details",
-        });
+      res.status(400).send({
+        status: false,
+        message: "Invalid request parameters. Please provide intern details",
+      });
       return;
     }
-   
-    const { name, email, mobile, collegeName } = requestBody;//Destructuring
+
+    const { name, email, mobile, collegeName } = requestBody; //Destructuring
 
     //  mandatory fields validation
     if (!isValid(name)) {
@@ -63,15 +61,13 @@ const createIntern = async function (req, res) {
 
     const isEmailAlreadyUsed = await internModel.findOne({ email });
     if (isEmailAlreadyUsed) {
-      res
-        .status(400)
-        .send({
-          status: false,
-          message: `${email} Email is already used, try different one `,
-        });
+      res.status(400).send({
+        status: false,
+        message: `${email} Email is already used, try different one `,
+      });
       return;
     }
-    
+
     if (!isValid(mobile)) {
       res
         .status(400)
@@ -79,21 +75,17 @@ const createIntern = async function (req, res) {
       return;
     }
 
-    const validMobile = /^(\+\d{1,3}[- ]?)?\d{10}$/.test(mobile);
-    if (!validMobile) {
-      return res
-        .status(400)
-        .send({ status: false, msg: "Enter valid mobile no." });
+    const validPincode = /^(\+\d{1,3}[- ]?)?\d{6}$/.test(Body.pincode);
+    if (!validPincode) {
+      return res.status(400).send({ status: false, msg: "Invalid Pincode" });
     }
 
     const ismobileAlreadyUsed = await internModel.findOne({ mobile });
     if (ismobileAlreadyUsed) {
-      res
-        .status(400)
-        .send({
-          status: false,
-          message: `${mobile} mobile is already used, try different one`,
-        });
+      res.status(400).send({
+        status: false,
+        message: `${mobile} mobile is already used, try different one`,
+      });
       return;
     }
 
@@ -115,15 +107,13 @@ const createIntern = async function (req, res) {
     // create intern with following keys
     const interndata = { name, email, mobile, collegeId };
 
-    // create intern 
+    // create intern
     const newIntern = await internModel.create(interndata);
-    res
-      .status(201)
-      .send({
-        status: true,
-        message: "New Intern created successfully",
-        data: newIntern,
-      });
+    res.status(201).send({
+      status: true,
+      message: "New Intern created successfully",
+      data: newIntern,
+    });
   } catch (error) {
     res.status(500).send({ status: false, msg: error.message });
   }
